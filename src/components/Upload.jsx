@@ -6,14 +6,14 @@ import { Clipboard } from "flowbite-react";
 import { Card } from "flowbite-react";
 import axios from 'axios';
 import AxiosHandler from '../utils/AxiosHandler.jsx';
-
+import { CirclesWithBar} from 'react-loader-spinner';
 
 function Upload() {
 
   const [files, setFiles] = useState(null);
   const [time, setTime] = useState(5);
   const [accessCode, setAccessCode] = useState('');
-
+  const [loading,setLoading] = useState(false);
   const onchangeHandler = (e) => {
     // console.log(e.target.files);
     setFiles(e.target.files);
@@ -38,12 +38,13 @@ function Upload() {
       formData.append('givenfiles', files[i]);
     }
     formData.append('timeOut', time);
-
+    setLoading(true);
     const response = await AxiosHandler(
       'post',
       '/upload',
       formData
     );
+    setLoading(false);
     setAccessCode(response.data.accessCode);
   
     // try {
@@ -133,7 +134,18 @@ function Upload() {
 
 
       {/* send button */}
-      <Button type="submit" className='w-28' onClick={onClickSend}>Send</Button>
+      <Button type="submit" className='w-32 ' onClick={onClickSend}>{loading?<CirclesWithBar
+  height="23"
+  width="23"
+  color="#FFFF"
+  outerCircleColor="#FFFF"
+  innerCircleColor="#FFFF"
+  barColor="#FFFF"
+  ariaLabel="circles-with-bar-loading"
+  wrapperStyle={{}}
+  wrapperClass=""
+  visible={true}
+  />:"Send"}</Button>
 
 
 

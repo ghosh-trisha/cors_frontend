@@ -4,13 +4,13 @@ import { Button, TextInput } from "flowbite-react";
 import AxiosHandler from '../utils/AxiosHandler.jsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDownload } from '@fortawesome/free-solid-svg-icons';
-
+import { CirclesWithBar} from 'react-loader-spinner';
 function Fetch() {
 
 
   const [accessCode, setAccessCode] = useState('');
   const [fileUrls, setFileUrls] = useState([]);
-
+  const [loading,setLoading] = useState(false);
   const handleAccessCodeChange = (e) => {
     setAccessCode(e.target.value);
   };
@@ -20,14 +20,15 @@ function Fetch() {
       console.log("Access code is required.");
       return;
     }
-
+    setLoading(true);
     const response = await AxiosHandler(
       'get',
       `/fetch/${accessCode}`
     );
     setFileUrls(response.data.data);
-    console.log(response.data.data)
-    console.log(fileUrls[0].url)
+    setLoading(false);
+    // console.log(response.data.data)
+    // console.log(fileUrls[0].url)
   };
 
 
@@ -50,7 +51,18 @@ function Fetch() {
 
 
         {/* click the get files button */}
-        <Button type="submit" className='w-28 mt-12 h-10' onClick={handleFetchFiles}>Get Files</Button>
+        <Button type="submit" className='w-28 mt-12 h-10' onClick={handleFetchFiles}>{loading?<CirclesWithBar
+  height="23"
+  width="23"
+  color="#FFFF"
+  outerCircleColor="#FFFF"
+  innerCircleColor="#FFFF"
+  barColor="#FFFF"
+  ariaLabel="circles-with-bar-loading"
+  wrapperStyle={{}}
+  wrapperClass=""
+  visible={true}
+  />:"Get Files"}</Button>
 
 
         {/* output div  */}
