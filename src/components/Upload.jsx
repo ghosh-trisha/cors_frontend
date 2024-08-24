@@ -49,6 +49,7 @@ function Upload() {
     // try {
     //   const response = await axios.post(
     //     'http://localhost:3000/api/v1/cors/upload',
+    // //     'https://cors-backend-u0je.onrender.com/api/v1/cors/upload',
     //     formData,
     //     {
     //       headers: {
