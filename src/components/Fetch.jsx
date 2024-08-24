@@ -23,8 +23,9 @@ function Fetch() {
       'get',
       `/fetch/${accessCode}`
     );
-    setFileUrls(response.data);
-    console.log(response.data);
+    setFileUrls(response.data.data);
+    console.log(response.data.data)
+    console.log(fileUrls[0].url)
   };
 
 
