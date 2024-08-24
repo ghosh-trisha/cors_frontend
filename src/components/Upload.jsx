@@ -12,6 +12,7 @@ function Upload() {
 
   const [files, setFiles] = useState(null);
   const [time, setTime] = useState(5);
+  const [accessCode, setAccessCode] = useState('');
 
   const onchangeHandler = (e) => {
     // console.log(e.target.files);
@@ -27,41 +28,42 @@ function Upload() {
 
 
   const onClickSend = async () => {
-
     if (!files || files.length === 0) {
       console.log("No files selected.");
       return;
     }
-    
+  
     const formData = new FormData();
     for (let i = 0; i < files.length; i++) {
-      formData.append('givenFiles', files[i]);
+      formData.append('givenfiles', files[i]);
     }
     formData.append('timeOut', time);
 
-    // const response = await AxiosHandler(
-    //   'post',
-    //   '/upload',
-    //   formData
-    // );
-    try{
-   const response=await axios.post(
-      'http://localhost:3000/api/v1/cors/upload',
-      formData,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-        withCredentials: true
-      }
+    const response = await AxiosHandler(
+      'post',
+      '/upload',
+      formData
     );
-
-    console.log(response);}
-    catch(err) {
-      console.error(err);
-    }
+    setAccessCode(response.data.accessCode);
+  
+    // try {
+    //   const response = await axios.post(
+    //     'http://localhost:3000/api/v1/cors/upload',
+    //     formData,
+    //     {
+    //       headers: {
+    //         'Content-Type': 'multipart/form-data',
+    //       },
+    //       withCredentials: true,
+    //     }  
+    //   );
+    //   console.log(response.data);
+    // } catch (err) {
+    //   console.error('Error during file upload:', err);
+    // }
 
   };
+  
 
 
 
@@ -143,11 +145,11 @@ function Upload() {
           </label>
           <input id="npm-install" type="text"
             className="col-span-6 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-500 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-400 dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-            value="Access code"
+            value={accessCode}
             disabled
             readOnly
           />
-          <Clipboard className='bg-[#0891B2]' valueToCopy="Access code" label="Copy" />
+          <Clipboard className='bg-[#0891B2]' valueToCopy={accessCode} label="Copy" />
         </div>
       </div>
     </div>
