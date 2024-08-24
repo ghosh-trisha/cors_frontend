@@ -3,7 +3,7 @@ import axios from 'axios'
 
 const axiosInstance = axios.create({
     // baseURL: 'http://localhost:3000/api/v1/cors',
-    baseURL: 'https://cors-backend-u0je.onrender.com/api/v1/cors',
+    baseURL: 'https://cors-backend-bn7d.onrender.com/api/v1/cors',
     timeout: 10*1000, // 10 second
     headers: {
         'Content-Type': 'multipart/form-data',

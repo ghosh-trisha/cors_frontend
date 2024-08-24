@@ -65,7 +65,7 @@ function Fetch() {
                   {/* show the download button  */}
                   <a
                     // href={`http://localhost:3000/api/v1/cors/download/${accessCode}/${file.url.split('/').pop()}`}
-                    href={`https://cors-backend-u0je.onrender.com/api/v1/cors/download/${accessCode}/${file.url.split('/').pop()}`}
+                    href={`https://cors-backend-bn7d.onrender.com/api/v1/cors/download/${accessCode}/${file.url.split('/').pop()}`}
                     download
                     className='ml-4 text-[#0891B2] hover:text-[#0891B2]'
                   > 
