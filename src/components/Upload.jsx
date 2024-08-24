@@ -4,32 +4,81 @@ import { FileInput, Label } from "flowbite-react";
 import { Button, TextInput } from "flowbite-react";
 import { Clipboard } from "flowbite-react";
 import { Card } from "flowbite-react";
+import axios from 'axios';
+import AxiosHandler from '../utils/AxiosHandler.jsx';
+
+
 function Upload() {
 
   const [files, setFiles] = useState(null);
-  const [time,setTime] = useState(5);
-  const onchangeHandler=(e)=>{
-    console.log(e.target.files);
+  const [time, setTime] = useState(5);
+
+  const onchangeHandler = (e) => {
+    // console.log(e.target.files);
     setFiles(e.target.files);
-    console.log(files);
+    // console.log(e.target.files);
   }
 
-  const ontimeChange=()=>{
-
+  const ontimeChange = (e) => {
+    // console.log(e.target.value);
+    setTime(e.target.value);
+    // console.log(e.target.value);
   }
+
+
+  const onClickSend = async () => {
+
+    if (!files || files.length === 0) {
+      console.log("No files selected.");
+      return;
+    }
+    
+    const formData = new FormData();
+    for (let i = 0; i < files.length; i++) {
+      formData.append('givenFiles', files[i]);
+    }
+    formData.append('timeOut', time);
+
+    // const response = await AxiosHandler(
+    //   'post',
+    //   '/upload',
+    //   formData
+    // );
+    try{
+   const response=await axios.post(
+      'http://localhost:3000/api/v1/cors/upload',
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        withCredentials: true
+      }
+    );
+
+    console.log(response);}
+    catch(err) {
+      console.error(err);
+    }
+
+  };
+
+
+
   return (
     <div className="flex flex-col w-full items-center justify-center md:h-screen">
 
 
-<Button type="" className='w-28 mt-5 h-10'>Upload</Button>
+      <Button type="" className='w-28 mt-5 h-10'>Upload</Button>
 
 
 
+      {/* put folder */}
       <div className='w-full mt-20 pl-10 pr-20'>
         <Label
           htmlFor="multiple-file-upload"
           className="flex h-40 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-600"
-         
+
         >
           <div className="flex flex-col items-center justify-center pb-6 pt-5">
             <svg
@@ -48,38 +97,40 @@ function Upload() {
               />
             </svg>
             {
-            files==null?<p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-              <span className="font-semibold">Click to upload</span> or drag and drop
-            </p>:
-            <p className="mb-2 text-sm text-gray-500 dark:text-gray-400 text-center">
-            {`${files.length} files`}
-              <br />
-            {` ${files[0].name}...`}
-            </p>
-          
-           }
+              files == null ? <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                <span className="font-semibold">Click to upload</span> or drag and drop
+              </p> :
+                <p className="mb-2 text-sm text-gray-500 dark:text-gray-400 text-center">
+                  {`${files.length} files`}
+                  <br />
+                  {` ${files[0].name}...`}
+                </p>
+
+            }
           </div>
-         <FileInput id="multiple-file-upload" className="hidden" onChange={(e)=>{onchangeHandler(e)}} multiple />
-        
+          <FileInput id="multiple-file-upload" className="hidden" onChange={(e) => { onchangeHandler(e) }} multiple />
+
         </Label>
       </div>
 
-   
 
 
 
+
+      {/* put time */}
       <div className='m-10 w-96'>
         <div className="mb-2 block">
           <Label htmlFor="timeOut" value="Time Out" />
         </div>
-        <TextInput id="timeOut" type="number" placeholder="availability time (in minutes)" required />
+        <TextInput id="timeOut" type="number" placeholder="availability time (in minutes)" required onChange={(e) => { ontimeChange(e) }} />
       </div>
 
 
 
 
 
-      <Button type="submit" className='w-28'>Send</Button>
+      {/* send button */}
+      <Button type="submit" className='w-28' onClick={onClickSend}>Send</Button>
 
 
 
